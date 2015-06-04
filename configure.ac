@@ -60,8 +60,7 @@ AS_IF([test x"$with_linux" != x -a "x$with_linux" != xno -a "x$with_linux" != xy
   LINUX_PATH="$with_linux"
   AC_SUBST(LINUX_PATH)
   LINUX_CFLAGS="-I${LINUX_PATH}/include"
-  CFLAGS+=" ${LINUX_CFLAGS}",
-  AC_MSG_ERROR([echo linux path not specified])
+  CFLAGS+=" ${LINUX_CFLAGS}"
 )
 
 AC_ARG_WITH([gtest],[AS_HELP_STRING([--with-gtest=PATH],[path to Google Test Framework])])
@@ -79,7 +78,7 @@ AM_CONDITIONAL([ENABLE_GTEST], [test x$ENABLE_GTEST = xyes])
 
 AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug],[enable debug symbols])])
 AS_IF([test "x$enable_debug" = "xyes"], [
-    CFLAGS+=" -DDEBUG -O0 -g"
+    CFLAGS+=' -DDEBUG -O0 -g'
     ENABLE_DEBUG="yes"
     AC_SUBST(ENABLE_DEBUG)
 ])
