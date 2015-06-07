@@ -64,7 +64,6 @@ apply_copyright() {
   D "footer = '${footer}'"
 
   TMP1="$(mktemp -t ${SCRIPT})"
-  echo '' > ${TMP1}
   [[ ! -f ${TMP1} ]] && die "${TMP1} is not a file"
 
   D "created tmp1 as ${TMP1}"
@@ -76,7 +75,7 @@ apply_copyright() {
 	
 	D "populating copyright in tmp1"
 	while read line; do
-	  printf "${prefix}${line}" >> ${TMP1} || die "failed to write line"
+	  printf "${prefix}${line}\n" >> ${TMP1} || die "failed to write line"
   done < ${CPN}
 
   if [ "" != "${footer}" ]; then
@@ -101,7 +100,6 @@ apply_copyright() {
 	    D "processing ${f}"
 
 	    TMP2="$(mktemp -t ${SCRIPT})"
-	    echo '' > ${TMP2}
 	    [[ ! -f ${TMP2} ]] && die "${TMP2} is not a file"
 
 	    D "created tmp2 as ${TMP2}"
