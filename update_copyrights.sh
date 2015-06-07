@@ -78,6 +78,8 @@ apply_copyright() {
 	for e in ${extensions}; do
 	  for f in $(find * -name "*${e}"); do
 	    
+	    echo "considering file '${f}'"
+	    
 	    if [ "" != "$(grep "${CPR}" ${TMP1})" ]; then
 	      continue
       fi
