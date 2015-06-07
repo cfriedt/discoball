@@ -26,11 +26,4 @@
  * SUCH DAMAGE.
  */
 
-#ifndef DISCOBALL_DISCOBALL_H_
-#define DISCOBALL_DISCOBALL_H_
-
-/****************************************************************************
- *                       DISCOBALL INCLUDES
- ****************************************************************************/
-
-#endif /* DISCOBALL_DISCOBALL_H_ */
+#include <discoball/discoball.h>
