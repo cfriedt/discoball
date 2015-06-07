@@ -51,7 +51,7 @@ apply_copyright() {
 
   echo "created tmp1 as ${TMP1}"
 	
-	if [ "" != "${header} ]; then
+	if [ "" != "${header}" ]; then
     echo "writing header to tmp1"
     printf "${header}\n" >> ${TMP1} || die "failed to write header" 
   fi
@@ -61,7 +61,7 @@ apply_copyright() {
 	  printf "${prefix}${line}" >> ${TMP1} || die "failed to write line"
   done < ${CPN}
 
-  if [ "" != "${footer} ]; then
+  if [ "" != "${footer}" ]; then
     echo "writing footer to tmp1"
     printf "${footer}\n" >> ${TMP1} || die "failed to write footer"
   fi
