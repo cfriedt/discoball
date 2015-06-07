@@ -52,8 +52,6 @@ sigint() {
 trap cleanup SIGHUP SIGTERM SIGQUIT SIGABRT || die "failed to install error handler"
 trap sigint SIGINT || die "failed to install SIGINT handler"
 
-sleep 20
-
 apply_copyright() {
 	local extensions=${1}
 	local prefix=${2}
