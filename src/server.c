@@ -24,8 +24,4 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#include "discoball/discoball.h"
-
-int foo() {
-	return 0;
-}
+#include <discoball/discoball.h>
