@@ -39,20 +39,30 @@ apply_copyright() {
 	local prefix=${2}
 	local header=${3}
 	local footer=${4}
-	
+
+	echo "extensions = '${extensions}'"
+	echo "prefix = '${prefix}'"
+  echo "header = '${header}'"
+  echo "footer = '${footer}'"
+
   TMP1="$(mktemp -t ${SCRIPT})"
   echo '' > ${TMP1}
-  [[ ! -f ${TMP1} ]] && die "${TMP1} is not a file" 
+  [[ ! -f ${TMP1} ]] && die "${TMP1} is not a file"
+
+  echo "created tmp1 as ${TMP1}"
 	
 	if [ "" != "${header} ]; then
+    echo "writing header to tmp1"
     printf "${header}\n" >> ${TMP1} || die "failed to write header" 
   fi
 	
+	echo "populating copyright in tmp1"
 	while $(read line); do
 	  printf "${prefix}${line}" >> ${TMP1} || die "failed to write line"
   done < ${CPN}
 
   if [ "" != "${footer} ]; then
+    echo "writing footer to tmp1"
     printf "${footer}\n" >> ${TMP1} || die "failed to write footer"
   fi
 
@@ -73,16 +83,20 @@ apply_copyright() {
 	    TMP2="$(mktemp -t ${SCRIPT})"
 	    echo '' > ${TMP2}
 	    [[ ! -f ${TMP2} ]] && die "${TMP2} is not a file"
-	    
-      cat ${TMP1} >> ${TMP2}
-      cat ${f} >> ${TMP2}
-      mv ${TMP2} ${f}
 
+	    echo "created tmp2 as ${TMP2}"
+
+      cat ${TMP1} >> ${TMP2} || die "failed to cat tmp1 to tmp2"
+      cat ${f} >> ${TMP2} || die "failed to cat ${f} to tmp2"
+      mv ${TMP2} ${f} || die "failed to mv tmp2 to ${f}"
+
+      echo "removing tmp2"
       rm -f ${TMP2}
       TMP2=""
     done
   done
   
+  echo "removing tmp1"
   rm -f ${TMP1}
   TMP1=""
 }
