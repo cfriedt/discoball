@@ -64,6 +64,12 @@ apply_copyright() {
 	for e in ${extensions}; do
 	  for f in $(find * -name "*${e}"); do
 	    
+	    if [ "" != "$(grep "${CPR}" ${TMP1})" ]; then
+	      continue
+      fi
+
+	    echo "processing ${f}"
+
 	    TMP2="$(mktemp -t ${SCRIPT})"
 	    echo '' > ${TMP2}
 	    [[ ! -f ${TMP2} ]] && die "${TMP2} is not a file"
