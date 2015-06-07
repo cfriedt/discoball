@@ -32,7 +32,9 @@ cleanup() {
   fi
 }
 
-trap "cleanup" SIGHUP SIGINT SIGTERM 
+trap "cleanup" SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT
+
+sleep 20
 
 apply_copyright() {
 	local extensions=${1}
@@ -57,7 +59,7 @@ apply_copyright() {
   fi
 	
 	echo "populating copyright in tmp1"
-	while $(read line); do
+	while read line; do
 	  printf "${prefix}${line}" >> ${TMP1} || die "failed to write line"
   done < ${CPN}
 
