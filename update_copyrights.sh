@@ -1,3 +1,29 @@
+# The compilation of software known as DiscoBall is distributed under the
+# following terms:
+#
+# Copyright (c) 2015 Christopher Friedt. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+# notice, this list of conditions and the following disclaimer in the
+# documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+
 #!/bin/sh
 
 NAME="$(basename ${PWD})"
@@ -67,12 +93,12 @@ apply_copyright() {
   [[ ! -f ${TMP1} ]] && die "${TMP1} is not a file"
 
   D "created tmp1 as ${TMP1}"
-	
+
 	if [ "" != "${header}" ]; then
     D "writing header to tmp1"
-    printf "${header}\n" >> ${TMP1} || die "failed to write header" 
+    printf "${header}\n" >> ${TMP1} || die "failed to write header"
   fi
-	
+
 	D "populating copyright in tmp1"
 	while read line; do
 	  printf "${prefix}${line}\n" >> ${TMP1} || die "failed to write line"
@@ -83,17 +109,19 @@ apply_copyright() {
     printf "${footer}\n" >> ${TMP1} || die "failed to write footer"
   fi
 
+  printf "\n" >> ${TMP1}
+
   if [ "" = "$(grep "${CPR}" ${TMP1})" ]; then
     false
     die "failed to find '${CPR}' in tmp1"
   fi
 
 	for e in ${extensions}; do
-	  for f in $(find * -name "*${e}"); do
-	    
+	  for f in $(find * -name "*\.${e}"); do
+
 	    D "considering file '${f}'"
-	    
-	    if [ "" != "$(grep "${CPR}" ${f})" ]; then
+
+	    if [ "" != "$(head -n 10 ${f} | grep "${CPR}")" ]; then
 	      continue
       fi
 
@@ -113,28 +141,28 @@ apply_copyright() {
       TMP2=""
     done
   done
-  
+
   D "removing tmp1"
   rm -f ${TMP1}
   TMP1=""
 }
 
 # update c-style copyrights
-EXT='.c .cpp .h .cc'
+EXT='c cpp h cc'
 PFX=' * '
 HDR='/*'
 FTR=' */'
 apply_copyright "${EXT}" "${PFX}" "${HDR}" "${FTR}" || die "'apply_copyright \"${EXT}\" \"${PFX}\" \"${HDR}\" \"${FTR}\"' failed"
 
 # update shell-style copyrights
-EXT='.sh .mk .am'
+EXT='sh mk am'
 PFX='# '
 HDR=''
 FTR=''
 apply_copyright "${EXT}" "${PFX}" "${HDR}" "${FTR}" || die "'apply_copyright \"${EXT}\" \"${PFX}\" \"${HDR}\" \"${FTR}\"' failed"
 
 # update autoconf-style copyrights
-ACFILES='.ac'
+EXT='ac'
 PFX='dnl '
 HDR=''
 FTR=''
