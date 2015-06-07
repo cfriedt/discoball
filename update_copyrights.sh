@@ -26,17 +26,17 @@ cleanup() {
   local r=$?
   echo "cleaning up"
   if [ "" != "${TMP1}" ]; then
+    echo "removing ${TMP1}"
     rm -f ${TMP1}
   fi
   if [ "" != "${TMP2}" ]; then
+    echo "removing ${TMP2}"
     rm -f ${TMP2}
   fi
   exit $r
 }
 
 trap cleanup SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT SIGINT || die "failed to install trap handler"
-
-sleep 20
 
 apply_copyright() {
 	local extensions=${1}
