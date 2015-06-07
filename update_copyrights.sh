@@ -43,7 +43,7 @@ cleanup() {
   exit $r
 }
 
-signint() {
+sigint() {
   echo "Caught ^C. cleaning up.."
   cleanup
 }
