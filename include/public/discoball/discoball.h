@@ -41,4 +41,19 @@
 
 #include <string.h>
 
+#define CONFIG_GENERIC_PINCONF
+#define CONFIG_OF
+#define CONFIG_PINCONF
+#define CONFIG_PINCTRL
+#define CONFIG_PINMUX
+
+#include <linux/pinctrl/consumer.h>
+#include <linux/pinctrl/devinfo.h>
+#include <linux/pinctrl/machine.h>
+#include <linux/pinctrl/pinconf.h>
+#include <linux/pinctrl/pinconf-generic.h>
+#include <linux/pinctrl/pinctrl.h>
+#include <linux/pinctrl/pinctrl-state.h>
+#include <linux/pinctrl/pinmux.h>
+
 #endif /* DISCOBALL_DISCOBALL_H_ */
