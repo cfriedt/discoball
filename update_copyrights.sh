@@ -79,13 +79,13 @@ trap cleanup SIGHUP SIGTERM SIGQUIT SIGABRT || die "failed to install error hand
 trap sigint SIGINT || die "failed to install SIGINT handler"
 
 apply_copyright() {
-	local extensions=${1}
-	local prefix=${2}
-	local header=${3}
-	local footer=${4}
+  local extensions=${1}
+  local prefix=${2}
+  local header=${3}
+  local footer=${4}
 
-	D "extensions = '${extensions}'"
-	D "prefix = '${prefix}'"
+  D "extensions = '${extensions}'"
+  D "prefix = '${prefix}'"
   D "header = '${header}'"
   D "footer = '${footer}'"
 
@@ -94,14 +94,14 @@ apply_copyright() {
 
   D "created tmp1 as ${TMP1}"
 
-	if [ "" != "${header}" ]; then
+  if [ "" != "${header}" ]; then
     D "writing header to tmp1"
     printf "${header}\n" >> ${TMP1} || die "failed to write header"
   fi
 
-	D "populating copyright in tmp1"
-	while read line; do
-	  printf "${prefix}${line}\n" | awk '{ sub(/[ \t]+$/, ""); print }' >> ${TMP1} || die "failed to write line"
+  D "populating copyright in tmp1"
+  while read line; do
+    printf "${prefix}${line}\n" | awk '{ sub(/[ \t]+$/, ""); print }' >> ${TMP1} || die "failed to write line"
   done < ${CPN}
 
   if [ "" != "${footer}" ]; then
@@ -116,21 +116,19 @@ apply_copyright() {
     die "failed to find '${CPR}' in tmp1"
   fi
 
-	for e in ${extensions}; do
-	  for f in $(find * -name "*\.${e}"); do
+  for e in ${extensions}; do
+    for f in $(find * -name "*\.${e}"); do
 
-	    D "considering file '${f}'"
-
-	    if [ "" != "$(head -n 10 ${f} | grep "${CPR}")" ]; then
-	      continue
+      D "considering file '${f}'"
+      if [ "" != "$(head -n 10 ${f} | grep "${CPR}")" ]; then
+        continue
       fi
+      D "processing ${f}"
 
-	    D "processing ${f}"
+      TMP2="$(mktemp -t ${SCRIPT})"
+      [[ ! -f ${TMP2} ]] && die "${TMP2} is not a file"
 
-	    TMP2="$(mktemp -t ${SCRIPT})"
-	    [[ ! -f ${TMP2} ]] && die "${TMP2} is not a file"
-
-	    D "created tmp2 as ${TMP2}"
+      D "created tmp2 as ${TMP2}"
 
       cat ${TMP1} >> ${TMP2} || die "failed to cat tmp1 to tmp2"
       cat ${f} >> ${TMP2} || die "failed to cat ${f} to tmp2"
