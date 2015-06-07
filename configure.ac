@@ -39,6 +39,14 @@ AC_PROG_LIBTOOL
 case $host_os in
   darwin* )
     LD_LIBRARY_PATH_VAR="DYLD_LIBRARY_PATH"
+    CFLAGS+=' -D_LINUX_ERR_H'
+    CFLAGS+=' -D_UAPI_LINUX_TYPES_H'
+    CFLAGS+=' -D_LINUX_TYPES_H'
+    CFLAGS+=' -D_LINUX_STDDEF_H'
+    CFLAGS+=' -D_LINUX_SEQ_FILE_H'
+    CFLAGS+=' -D_LINUX_RADIX_TREE_H'
+    CFLAGS+=' -D_SECURE__STRING_H_'
+    CFLAGS+=" -include $srcdir/include/public/discoball/linux_types.h"
     ;;
   *)
     LD_LIBRARY_PATH_VAR="LD_LIBRARY_PATH"
@@ -59,7 +67,7 @@ AC_ARG_WITH([linux],[AS_HELP_STRING([--with-linux=PATH],[path to Linux source])]
 AS_IF([test x"$with_linux" != x -a "x$with_linux" != xno -a "x$with_linux" != xyes],
   LINUX_PATH="$with_linux"
   AC_SUBST(LINUX_PATH)
-  LINUX_CFLAGS="-I${LINUX_PATH}/include"
+  LINUX_CFLAGS="-I${LINUX_PATH}/include -I${LINUX_PATH}/include/uapi"
   CFLAGS+=" ${LINUX_CFLAGS}"
 )
 

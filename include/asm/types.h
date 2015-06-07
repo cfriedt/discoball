@@ -1,0 +1,4 @@
+#ifndef DISCOBALL_ASM_TYPES_H_
+#define DISCOBALL_ASM_TYPES_H_
+
+#endif /* DISCOBALL_ASM_TYPES_H_ */
