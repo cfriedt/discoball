@@ -16,7 +16,7 @@ if [ "" = "$(grep "AC_INIT(${NAME}" configure.ac 2>/dev/null)" ]; then
   die "${SCRIPT} must be run in top source directory"
 fi
 
-CPY="Copyright (c)"
+CPR="Copyright (c)"
 CPN="COPYING"
 
 TMP1=""
