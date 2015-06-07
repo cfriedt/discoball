@@ -44,7 +44,8 @@ cleanup() {
 }
 
 sigint() {
-  echo "Caught ^C. cleaning up.."
+  echo ""
+  echo "Caught SIGINT. cleaning up..."
   cleanup
 }
 
