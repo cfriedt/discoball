@@ -26,3 +26,11 @@
 
 SUBDIRS = \
   public
+
+noinst_HEADERS = \
+  asm/bug.h \
+  asm/errno.h \
+  asm/string.h \
+  asm/types.h \
+  discoball_internal.h \
+  linux_types.h

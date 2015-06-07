@@ -51,7 +51,7 @@ noinst_PROGRAMS = \
 
 check-local: $(noinst_PROGRAMS)
 	for i in $(nongtest_programs); do \
-	  ./$$i; \
+	  ./$$i || exit 1; \
 	done
 	for i in $(gtest_programs); do \
 	  @LD_LIBRARY_PATH_VAR@=@GTEST_PATH@/lib \

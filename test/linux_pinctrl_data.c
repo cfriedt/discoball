@@ -27,7 +27,7 @@
  */
 
 #include "discoball/discoball.h"
-#include "discoball_build.h"
+#include "discoball_internal.h"
 
 #include "linux_pinctrl_data.h"
 

@@ -24,6 +24,9 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+noinst_LTLIBRARIES = \
+  libsrcdiscoball.la
+
 libsrcdiscoball_la_SOURCES = \
   client.c \
   server.c

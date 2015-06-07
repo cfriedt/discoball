@@ -43,17 +43,17 @@
 #ifndef _LINUX_RADIX_TREE_H
 #define _LINUX_RADIX_TREE_H
 #endif /* _LINUX_RADIX_TREE_H */
-#ifndef _LINUX_RADIX_TREE_H
+#ifndef _SECURE__STRING_H_
 #define _SECURE__STRING_H_
-#endif /* _LINUX_RADIX_TREE_H */
+#endif /* _SECURE__STRING_H_ */
 
 #include "linux_types.h"
 
 #endif
 
-////////////
-// PINCTRL
-////////////
+/////////////////////////////////////////////////////////////////////////////
+//                       LINUX INCLUDES
+//////////////////////////////////////////////////////////////////////////////
 
 #define CONFIG_GENERIC_PINCONF
 #define CONFIG_OF
