@@ -43,7 +43,15 @@ cleanup() {
   exit $r
 }
 
-trap cleanup SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT SIGINT || die "failed to install trap handler"
+signint() {
+  echo "Caught ^C. cleaning up.."
+  cleanup
+}
+
+trap cleanup SIGHUP SIGTERM SIGQUIT SIGABRT || die "failed to install error handler"
+trap sigint SIGINT || die "failed to install SIGINT handler"
+
+sleep 20
 
 apply_copyright() {
 	local extensions=${1}
@@ -135,4 +143,4 @@ HDR=''
 FTR=''
 apply_copyright "${EXT}" "${PFX}" "${HDR}" "${FTR}" || die "'apply_copyright \"${EXT}\" \"${PFX}\" \"${HDR}\" \"${FTR}\"' failed"
 
-exit 0
+cleanup
