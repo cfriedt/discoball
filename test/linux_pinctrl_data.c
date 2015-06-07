@@ -65,6 +65,7 @@ struct pinctrl_ops foo_pctrl_ops = {
 
 int foo_pin_config_get( struct pinctrl_dev *pctldev, unsigned offset, unsigned long *config ) {
 	*config = PIN_CONFIG_BIAS_HIGH_IMPEDANCE;
+	return 0;
 }
 
 int foo_pin_config_set( struct pinctrl_dev *pctldev, unsigned offset, unsigned long config ) {

@@ -5,11 +5,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define _(x) typedef uint##x##_t __u##x; typedef int##x##_t __s##x; typedef uint##x##_t u##x; typedef int##x##_t s##x
+// define e.g. __u32 __s32 u32 s32 all in one statement
+#undef _
+#define _(x) \
+	typedef uint##x##_t __u##x; \
+	typedef int##x##_t __s##x; \
+	typedef uint##x##_t u##x; \
+	typedef int##x##_t s##x
+
 _(64);
 _(32);
 _(16);
 _(8);
+#undef _
 
 struct list_head;
 struct list_head {
@@ -32,5 +40,11 @@ typedef unsigned gfp_t;
 typedef off_t loff_t;
 
 #define __must_check
+
+#define MAX_ERRNO	4095
+#define IS_ERR(x) 0
+#define ERR_PTR(x) 0
+#define PTR_ERR(x) 0
+#define ERR_CAST(x) 0
 
 #endif /* INCLUDE_LINUX_TYPES_H_ */
