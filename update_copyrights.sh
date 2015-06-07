@@ -29,37 +29,24 @@ CPN="COPYING"
 TMP1=""
 TMP2=""
 
-IN_CLEANUP=0
 cleanup() {
-  if [ 1 -eq $IN_CLEANUP ]; then
-    echo "already cleaning up..."
-  else
-    IN_CLEANUP=1
-    local r=$?
-	  echo "cleaning up"
-	  if [ "" != "${TMP1}" ]; then
-	    D "removing ${TMP1}"
-	    rm -f ${TMP1}
-	  fi
-	  if [ "" != "${TMP2}" ]; then
-	    D "removing ${TMP2}"
-	    rm -f ${TMP2}
-	  fi
-	  exit $r
+  local r=$?
+  echo "cleaning up"
+  if [ "" != "${TMP1}" ]; then
+    D "removing ${TMP1}"
+    rm -f ${TMP1}
   fi
+  if [ "" != "${TMP2}" ]; then
+    D "removing ${TMP2}"
+    rm -f ${TMP2}
+  fi
+  exit $r
 }
 
-SIGINT_HANDLED=0
 sigint() {
-  if [ 1 -eq $SIGINT_HANDLED ]; then
-    echo "SIGINT already handled. Stil cleaning up.."
-  else
-    SIGINT_HANDLED=1
-	  echo ""
-	  echo "Caught SIGINT..."
-	  sleep 10
-	  cleanup
-  fi
+  echo ""
+  echo "Caught SIGINT. cleaning up..."
+  cleanup
 }
 
 trap cleanup SIGHUP SIGTERM SIGQUIT SIGABRT || die "failed to install error handler"
