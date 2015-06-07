@@ -23,6 +23,7 @@ TMP1=""
 TMP2=""
 
 cleanup() {
+  local r=$?
   echo "cleaning up"
   if [ "" != "${TMP1}" ]; then
     rm -f ${TMP1}
@@ -30,9 +31,10 @@ cleanup() {
   if [ "" != "${TMP2}" ]; then
     rm -f ${TMP2}
   fi
+  exit $r
 }
 
-trap "cleanup" SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT
+trap cleanup SIGHUP SIGINT SIGTERM SIGQUIT SIGABRT SIGINT || die "failed to install trap handler"
 
 sleep 20
 
@@ -123,3 +125,5 @@ PFX='dnl '
 HDR=''
 FTR=''
 apply_copyright "${EXT}" "${PFX}" "${HDR}" "${FTR}" || die "'apply_copyright \"${EXT}\" \"${PFX}\" \"${HDR}\" \"${FTR}\"' failed"
+
+exit 0
