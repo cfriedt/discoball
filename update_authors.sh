@@ -1,17 +1,17 @@
 # The compilation of software known as DiscoBall is distributed under the
 # following terms:
-# 
+#
 # Copyright (c) 2015 Christopher Friedt. All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
 # 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
+# notice, this list of conditions and the following disclaimer.
 # 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-# 
+# notice, this list of conditions and the following disclaimer in the
+# documentation and/or other materials provided with the distribution.
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -23,12 +23,30 @@
 # LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
+
 #!/bin/sh
 
-NAME=discoball
+NAME="$(basename ${PWD})"
+SCRIPT="$(basename $0)"
 
-if [ "$(grep "AC_INIT(${NAME}" configure.ac)" = "" ]; then
-  echo "autogen.sh must be run in PWD of ${NAME} source"
-  exit 1
+die() {
+  local r=$?
+  if [ "" != "$*" ]; then
+    echo "$*"
+  fi
+  exit $r
+}
+
+if [ "" = "$(grep "AC_INIT(${NAME}" configure.ac 2>/dev/null)" ]; then
+  false
+  die "${SCRIPT} must be run in top source directory"
 fi
+
+DEBUG=""
+D() {
+  if [ "" != "${DEBUG}" ]; then
+    echo "D/ $*"
+  fi
+}
+
 grep "^[0-9]" ChangeLog | awk '{split($0,a,"\t"); printf("%s, %s, %s\n", a[1] ,a[2], a[3]);}' | sort -u > AUTHORS
