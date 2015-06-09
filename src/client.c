@@ -27,3 +27,6 @@
  */
 
 #include <discoball/discoball.h>
+
+#include "discoball_internal.h"
+

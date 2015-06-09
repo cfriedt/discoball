@@ -25,4 +25,7 @@
 # SUCH DAMAGE.
 
 nobase_include_HEADERS = \
-  discoball/discoball.h
+  discoball/client.h \
+  discoball/discoball.h \
+  discoball/packet.h \
+  discoball/server.h
