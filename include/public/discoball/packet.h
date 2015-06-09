@@ -147,8 +147,12 @@ typedef struct discoboall_packet_array_data {
 typedef discoball_packet_array_data_t discoboall_packet_data_string_t;
 
 /*###########################################################################
- #                          GET / SET ATTRIBUTE PACKETS
+ #                          GET / SET PROPERTY PACKETS
  ###########################################################################*/
+
+// control endpoint properties will be listed in a different header
+// but that would include such things as heartbeat_rate_s (0 = disable),
+// noack_mode_enable (only reports corrupt packets or protocol errors)
 
 typedef enum {
 	DISCOBALL_PROPERTY_SET = 1, // 1 if the intension of the packet is to write a value to the property, otherwise a read
