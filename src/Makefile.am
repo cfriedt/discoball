@@ -30,3 +30,10 @@ noinst_LTLIBRARIES = \
 libsrcdiscoball_la_SOURCES = \
   client.c \
   server.c
+
+noinst_PROGRAMS = \
+  test
+
+test_SOURCES =
+
+test_LDADD = libsrcdiscoball.la
