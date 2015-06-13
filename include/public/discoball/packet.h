@@ -30,6 +30,7 @@
 #define DISCOBALL_PACKET_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /*###########################################################################
  #                            ENDPOINTS
@@ -48,6 +49,8 @@ typedef struct discoball_packet_header {
 	uint8_t packet_type;
 	uint8_t frame_no;
 	uint8_t endpoint;
+	uint32_t timestamp_ns_tx;
+	uint32_t timestamp_ns_rx;
 	uint8_t data[];
 } discoball_packet_header_t __attribute__(( packed ));
 
@@ -62,20 +65,12 @@ typedef struct discoball_packet_footer {
  ###########################################################################*/
 
 enum {
-	DISCOBALL_PACKET_TYPE_HEARTBEAT = 0,
-	DISCOBALL_PACKET_TYPE_ACK,
+	DISCOBALL_PACKET_TYPE_ACK = 0,
+	DISCOBALL_PACKET_TYPE_CLOCK_ADJUSTMENT,
+	DISCOBALL_PACKET_TYPE_HEARTBEAT,
 	DISCOBALL_PACKET_TYPE_ERROR,
 	DISCOBALL_PACKET_TYPE_DATA,
 };
-
-/*###########################################################################
- #                            HEARTBEAT
- ###########################################################################*/
-
-typedef struct discoboall_packet_heartbeat {
-	discoball_packet_header_t hdr;
-	discoball_packet_footer_t ftr;
-} discoball_packet_heartbeat_t __attribute__(( packed ));
 
 /*###########################################################################
  #                       ACK / NACK / RETRANSMIT
@@ -90,14 +85,34 @@ typedef enum {
 typedef struct discoboall_packet_ack {
 	discoball_packet_header_t hdr;
 	union {
-		struct {
-			uint8_t retransmit_frame_no;
-			uint8_t flags; // normally, this reads DISCOBALL_ACK_ALL_OK
-		} field;
+		struct _discoball_packet_ack_status {
+			bool rx_ok:1;
+			bool proto_ok:1;
+			uint8_t retransmit_frame_no:8;
+		} bitwise;
 		uint16_t raw;
 	} status;
 	discoball_packet_footer_t ftr;
 } discoball_packet_ack_t __attribute__(( packed ));
+
+/*###########################################################################
+ #                            CLOCK ADJUSTMENT
+ ###########################################################################*/
+
+typedef struct discoboall_packet_clock_adjustment {
+	discoball_packet_header_t hdr;
+	int32_t adjustment_ns;
+	discoball_packet_footer_t ftr;
+} discoball_packet_clock_adjustment_t __attribute__(( packed ));
+
+/*###########################################################################
+ #                            HEARTBEAT
+ ###########################################################################*/
+
+typedef struct discoboall_packet_heartbeat {
+	discoball_packet_header_t hdr;
+	discoball_packet_footer_t ftr;
+} discoball_packet_heartbeat_t __attribute__(( packed ));
 
 /*###########################################################################
  #                                ERROR
@@ -111,11 +126,11 @@ typedef enum {
 typedef struct discoboall_packet_error {
 	discoball_packet_header_t hdr;
 	union {
-		struct {
+		struct _discoball_packet_error_status {
 			uint8_t err_frame_no;
 			uint8_t type;
 			uint16_t errno;
-		} field;
+		} bitwise;
 		uint32_t raw;
 	} status;
 	discoball_packet_footer_t ftr;
@@ -190,7 +205,13 @@ typedef enum {
 // header portion of raw property frame, always followed by a key and footer at a given offset, and an optional value
 typedef struct discoboall_packet_property {
 	discoball_packet_header_t hdr;
-	uint8_t flags;
+	union {
+		struct _discoball_packet_property_flags {
+			bool set:1;
+			bool ro:1;
+		} bitwise;
+		uint8_t raw;
+	} flags;
 	uint8_t data[];
 } discoball_packet_property_t __attribute__(( packed ));
 

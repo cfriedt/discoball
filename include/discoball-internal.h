@@ -26,8 +26,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef DISCOBALL_BUILD_H_
-#define DISCOBALL_BUILD_H_
+#ifndef DISCOBALL_INTERNAL_H_
+#define DISCOBALL_INTERNAL_H_
 
 /*###########################################################################
  #                       STANDARD / SYSTEM HEADERS
@@ -40,18 +40,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <pthread.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <sys/queue.h>
 
 #include <unistd.h>
 #include <errno.h>
 
 /*###########################################################################
- #                       LINUX INCLUDES
+ #                       LINUX TYPES
  ###########################################################################*/
 
 #ifdef __APPLE__
@@ -78,28 +77,30 @@
 #define _SECURE__STRING_H_
 #endif /* _SECURE__STRING_H_ */
 
-#include "linux_types.h"
+#include "linux-types.h"
 
 #endif
 
-#include "debug.h"
-#include "array_size.h"
+/*###########################################################################
+ #                       LINUX STRUCTS
+ ###########################################################################*/
 
-// PINCONF
+#include "linux-support.h"
 
-#define CONFIG_GENERIC_PINCONF
-#define CONFIG_OF
-#define CONFIG_PINCONF
-#define CONFIG_PINCTRL
-#define CONFIG_PINMUX
+/*###########################################################################
+ #                       CONVENIENCE MACROS
+ ###########################################################################*/
 
-#include <linux/pinctrl/consumer.h>
-#include <linux/pinctrl/devinfo.h>
-#include <linux/pinctrl/machine.h>
-#include <linux/pinctrl/pinconf.h>
-#include <linux/pinctrl/pinconf-generic.h>
-#include <linux/pinctrl/pinctrl.h>
-#include <linux/pinctrl/pinctrl-state.h>
-#include <linux/pinctrl/pinmux.h>
+#include "discoball-array-size.h"
+#include "discoball-container-of.h"
+#include "discoball-debug.h"
 
-#endif /* DISCOBALL_BUILD_H_ */
+/*###########################################################################
+ #                           DISCOBALL
+ ###########################################################################*/
+
+#include "discoball/discoball.h"
+
+#include "discoball-context.h"
+
+#endif /* DISCOBALL_INTERNAL_H_ */

@@ -32,5 +32,11 @@ noinst_HEADERS = \
   asm/errno.h \
   asm/string.h \
   asm/types.h \
-  discoball_internal.h \
-  linux_types.h
+  discoball-array-size.h \
+  discoball-common.h \
+  discoball-container-of.h \
+  discoball-context.h \
+  discoball-debug.h \
+  discoball-internal.h \
+  linux-support.h \
+  linux-types.h

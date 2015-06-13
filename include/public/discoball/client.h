@@ -29,7 +29,8 @@
 #ifndef DISCOBALL_CLIENT_H_
 #define DISCOBALL_CLIENT_H_
 
-typedef struct discoball_client {
-} discoball_client_t;
+typedef struct discoball_client_cb {
+
+} discoball_client_cb_t;
 
 #endif /* DISCOBALL_CLIENT_H_ */
