@@ -2,6 +2,10 @@
 
 static CIRCLEQ_HEAD( circleq, entry ) head;
 
+int discoball_init() {
+	CIRCLEQ_INIT( &head );
+}
+
 int discoball_common_register( discoball_context_t *ctx, void *cb, bool server ) {
 
 	int r;
@@ -26,8 +30,4 @@ int discoball_common_register( discoball_context_t *ctx, void *cb, bool server )
 
 out:
 	return r;
-}
-
-int discoball_init() {
-	CIRCLEQ_INIT( &head );
 }
