@@ -29,8 +29,19 @@
 #ifndef DISCOBALL_DISCOBALL_H_
 #define DISCOBALL_DISCOBALL_H_
 
-/****************************************************************************
- *                       DISCOBALL INCLUDES
- ****************************************************************************/
+/*###########################################################################
+ #                       DISCOBALL INCLUDES
+ ###########################################################################*/
+
+#define SIZEOF_DISCOBALL_CONTEXT ( 16 * sizeof( void * ) )
+
+struct discoball_context;
+typedef struct discoball_context {
+	unsigned char opaque[ SIZEOF_DISCOBALL_CONTEXT ];
+} discoball_context_t;
+
+#include <discoball/client.h>
+#include <discoball/server.h>
+#include <discoball/buffer.h>
 
 #endif /* DISCOBALL_DISCOBALL_H_ */

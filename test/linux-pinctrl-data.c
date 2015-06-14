@@ -27,13 +27,9 @@
  */
 
 #include "discoball/discoball.h"
-#include "discoball_build.h"
+#include "discoball-internal.h"
 
-#include "linux_pinctrl_data.h"
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE( x ) ( sizeof( x ) / sizeof( ( x )[ 0 ] ) )
-#endif
+#include "linux-pinctrl-data.h"
 
 #undef _
 #define _( x, y ) PINCTRL_PIN( x, y )

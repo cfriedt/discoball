@@ -26,4 +26,14 @@
  * SUCH DAMAGE.
  */
 
-#include <discoball/discoball.h>
+#include "discoball-internal.h"
+
+static const bool not_a_server = false;
+
+int discoball_client_register( discoball_context_t *ctx, discoball_client_cb_t *ccb ) {
+	return discoball_common_register( ctx, ccb, not_a_server );
+}
+
+int discoball_client_deregister( discoball_context_t *ctx ) {
+	return discoball_common_deregister( ctx, not_a_server );
+}

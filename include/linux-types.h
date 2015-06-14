@@ -1,4 +1,5 @@
-/* The compilation of software known as DiscoBall is distributed under the
+/*
+ * The compilation of software known as DiscoBall is distributed under the
  * following terms:
  *
  * Copyright (c) 2015 Christopher Friedt. All rights reserved.
@@ -7,10 +8,10 @@
  * modification, are permitted provided that the following conditions
  * are met:
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -25,14 +26,53 @@
  * SUCH DAMAGE.
  */
 
-#include "discoball-internal.h"
+#ifndef LINUX_TYPES_H_
+#define LINUX_TYPES_H_
 
-static const bool a_server = true;
+#include <sys/types.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *ccb ) {
-	return discoball_common_register( ctx, ccb, a_server );
-}
+// define e.g. __u32 __s32 u32 s32 all in one statement
+#undef _
+#define _(x) \
+	typedef uint##x##_t __u##x; \
+	typedef int##x##_t __s##x; \
+	typedef uint##x##_t u##x; \
+	typedef int##x##_t s##x
 
-int discoball_server_deregister( discoball_context_t *ctx ) {
-	return discoball_common_deregister( ctx, a_server );
-}
+_(64);
+_(32);
+_(16);
+_(8);
+#undef _
+
+struct list_head;
+struct list_head {
+	struct list_head *prev;
+	struct list_head *next;
+};
+
+struct hlist_head {
+	struct hlist_node *first;
+};
+
+struct hlist_node;
+struct hlist_node {
+	struct hlist_node *next;
+	struct hlist_node **pprev;
+};
+
+typedef size_t __kernel_size_t;
+typedef unsigned gfp_t;
+typedef off_t loff_t;
+
+#define __must_check
+
+#define MAX_ERRNO	4095
+#define IS_ERR(x) 0
+#define ERR_PTR(x) 0
+#define PTR_ERR(x) 0
+#define ERR_CAST(x) 0
+
+#endif /* LINUX_TYPES_H_ */

@@ -26,53 +26,19 @@
  * SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_LINUX_TYPES_H_
-#define INCLUDE_LINUX_TYPES_H_
+#ifndef DISCOBALL_SERVER_H_
+#define DISCOBALL_SERVER_H_
 
-#include <sys/types.h>
-#include <stdint.h>
-#include <stdbool.h>
+#ifndef DISCOBALL_DISCOBALL_H_
+#error discoball/server.h should not be directly included. It should be included by including discoball/discoball.h
+#endif
 
-// define e.g. __u32 __s32 u32 s32 all in one statement
-#undef _
-#define _(x) \
-	typedef uint##x##_t __u##x; \
-	typedef int##x##_t __s##x; \
-	typedef uint##x##_t u##x; \
-	typedef int##x##_t s##x
+typedef struct discoball_server_cb {
+	int (*write)( void *data, size_t size );
+	int (*cleanup)( );
+} discoball_server_cb_t;
 
-_(64);
-_(32);
-_(16);
-_(8);
-#undef _
+int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *scb );
+int discoball_server_deregister( discoball_context_t *ctx );
 
-struct list_head;
-struct list_head {
-	struct list_head *prev;
-	struct list_head *next;
-};
-
-struct hlist_head {
-	struct hlist_node *first;
-};
-
-struct hlist_node;
-struct hlist_node {
-	struct hlist_node *next;
-	struct hlist_node **pprev;
-};
-
-typedef size_t __kernel_size_t;
-typedef unsigned gfp_t;
-typedef off_t loff_t;
-
-#define __must_check
-
-#define MAX_ERRNO	4095
-#define IS_ERR(x) 0
-#define ERR_PTR(x) 0
-#define PTR_ERR(x) 0
-#define ERR_CAST(x) 0
-
-#endif /* INCLUDE_LINUX_TYPES_H_ */
+#endif /* DISCOBALL_SERVER_H_ */
