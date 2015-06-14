@@ -47,7 +47,7 @@ case $host_os in
     CFLAGS+=' -D_LINUX_SEQ_FILE_H'
     CFLAGS+=' -D_LINUX_RADIX_TREE_H'
     CFLAGS+=' -D_SECURE__STRING_H_'
-    CFLAGS+=" -include $srcdir/include/linux_types.h"
+    CFLAGS+=" -include $srcdir/include/linux-types.h"
     ;;
   *)
     LD_LIBRARY_PATH_VAR="LD_LIBRARY_PATH"

@@ -25,12 +25,12 @@
 # SUCH DAMAGE.
 
 nongtest_programs = \
-  linux_pinctrl_example
+  linux-pinctrl-example
 
 linux_pinctrl_example_SOURCES = \
-  linux_pinctrl_data.h \
-  linux_pinctrl_data.c \
-  linux_pinctrl_example.c
+  linux-pinctrl-data.h \
+  linux-pinctrl-data.c \
+  linux-pinctrl-example.c
 
 if ENABLE_GTEST
 
@@ -41,7 +41,7 @@ strlen_LDFLAGS = @GTEST_LDFLAGS@
 strlen_SOURCES = \
   strlen.h \
   strlen.cc \
-  strlen_unittest.cc
+  strlen-unittest.cc
 
 endif
 
