@@ -29,6 +29,10 @@
 #ifndef DISCOBALL_INTERNAL_H_
 #define DISCOBALL_INTERNAL_H_
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif /* HAVE_CONFIG_H */
+
 /*###########################################################################
  #                       STANDARD / SYSTEM HEADERS
  ###########################################################################*/
@@ -36,18 +40,15 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/socket.h>
-#include <sys/select.h>
 #include <sys/queue.h>
 
-#include <unistd.h>
+#include <string.h>
 #include <errno.h>
+
+#ifdef HAVE_PTHREAD_H
+#include <pthread.h>
+#endif
 
 /*###########################################################################
  #                       LINUX TYPES
@@ -88,19 +89,16 @@
 #include "linux-support.h"
 
 /*###########################################################################
- #                       CONVENIENCE MACROS
- ###########################################################################*/
-
-#include "discoball-array-size.h"
-#include "discoball-container-of.h"
-#include "discoball-debug.h"
-
-/*###########################################################################
  #                           DISCOBALL
  ###########################################################################*/
 
 #include "discoball/discoball.h"
 
+#include "discoball-array-size.h"
+#include "discoball-common.h"
+#include "discoball-container-of.h"
 #include "discoball-context.h"
+#include "discoball-debug.h"
+#include "discoball-mutex.h"
 
 #endif /* DISCOBALL_INTERNAL_H_ */

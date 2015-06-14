@@ -26,8 +26,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_LINUX_TYPES_H_
-#define INCLUDE_LINUX_TYPES_H_
+#ifndef LINUX_TYPES_H_
+#define LINUX_TYPES_H_
 
 #include <sys/types.h>
 #include <stdint.h>
@@ -75,4 +75,4 @@ typedef off_t loff_t;
 #define PTR_ERR(x) 0
 #define ERR_CAST(x) 0
 
-#endif /* INCLUDE_LINUX_TYPES_H_ */
+#endif /* LINUX_TYPES_H_ */

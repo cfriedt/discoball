@@ -1,5 +1,5 @@
-#ifndef CONTAINER_OF_H_
-#define CONTAINER_OF_H_
+#ifndef DISCOBALL_CONTAINER_OF_H_
+#define DISCOBALL_CONTAINER_OF_H_
 
 #ifndef container_of
 #define container_of(ptr, type, member) \
@@ -9,4 +9,4 @@
 })
 #endif
 
-#endif /* CONTAINER_OF_H_ */
+#endif /* DISCOBALL_CONTAINER_OF_H_ */

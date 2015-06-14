@@ -1,5 +1,5 @@
-#ifndef DEBUG_H_
-#define DEBUG_H_
+#ifndef DISCOBALL_DEBUG_H_
+#define DISCOBALL_DEBUG_H_
 
 #ifdef DEBUG
 
@@ -30,4 +30,4 @@
 
 #endif
 
-#endif /* DEBUG_H_ */
+#endif /* DISCOBALL_DEBUG_H_ */

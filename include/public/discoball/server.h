@@ -29,7 +29,16 @@
 #ifndef DISCOBALL_SERVER_H_
 #define DISCOBALL_SERVER_H_
 
+#ifndef DISCOBALL_DISCOBALL_H_
+#error discoball/server.h should not be directly included. It should be included by including discoball/discoball.h
+#endif
+
 typedef struct discoball_server_cb {
+	int (*write)( void *data, size_t size );
+	int (*cleanup)( );
 } discoball_server_cb_t;
+
+int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *scb );
+int discoball_server_deregister( discoball_context_t *ctx );
 
 #endif /* DISCOBALL_SERVER_H_ */

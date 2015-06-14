@@ -29,8 +29,15 @@
 #ifndef DISCOBALL_CLIENT_H_
 #define DISCOBALL_CLIENT_H_
 
-typedef struct discoball_client_cb {
+#ifndef DISCOBALL_DISCOBALL_H_
+#error discoball/client.h should not be directly included. It should be included by including discoball/discoball.h
+#endif
 
+typedef struct discoball_client_cb {
+	int (*write)( void *data, size_t size );
 } discoball_client_cb_t;
+
+int discoball_client_register( discoball_context_t *ctx, discoball_client_cb_t *ccb );
+int discoball_client_deregister( discoball_context_t *ctx );
 
 #endif /* DISCOBALL_CLIENT_H_ */

@@ -1,7 +1,16 @@
-#ifndef INCLUDE_DISCOBALL_CONTEXT_H_
-#define INCLUDE_DISCOBALL_CONTEXT_H_
+#ifndef DISCOBALL_CONTEXT_H_
+#define DISCOBALL_CONTEXT_H_
 
 // CONTEXT
+
+/* API Consumers can duplicate data in their own callbacks if required.
+ * That way, dynamic allocation and freeing is unnecessary.
+ */
+
+// FIXME: both discoball_client_context and discoball_server_context need "specific" data
+// I'm going to take the approach that this will be a key-value system, where the keys are
+// integers
+// Also need to expose functions publicly - i.e. discoball_client_get_specific(), discoball_client_set_specific(),
 
 typedef struct discoball_client_context {
 	discoball_client_cb_t *cb;
@@ -24,13 +33,13 @@ typedef struct discoball_peer {
 		discoball_client_context_t client;
 		discoball_server_context_t server;
 	} view;
-	CIRCLEQ_ENTRY( entry ) entries;
+	CIRCLEQ_ENTRY( discoball_peer ) entries;
 } discoball_peer_t;
 
-static inline discoball_peer_t *client_to_peer( discoball_client_context_t *cli ) {
+static inline discoball_peer_t *discoball_client_to_peer( discoball_client_context_t *cli ) {
 	return container_of( cli, discoball_peer_t, view.client );
 }
-static inline discoball_peer_t *server_to_peer( discoball_server_context_t *srv ) {
+static inline discoball_peer_t *discoball_server_to_peer( discoball_server_context_t *srv ) {
 	return container_of( srv, discoball_peer_t, view.server );
 }
 
@@ -41,8 +50,12 @@ typedef struct discoball_internal_context {
 	} view;
 } discoball_internal_context_t;
 
-static inline discoball_internal_context_t *to_internal( discoball_context_t *ctx ) {
+static inline discoball_internal_context_t *discoball_to_internal( discoball_context_t *ctx ) {
 	return container_of( ctx, discoball_internal_context_t, view.opaque );
 }
 
-#endif /* INCLUDE_DISCOBALL_CONTEXT_H_ */
+static inline discoball_peer_t *discoball_internal_to_peer( discoball_internal_context_t *ctx ) {
+	return &ctx->view.peer;
+}
+
+#endif /* DISCOBALL_CONTEXT_H_ */
