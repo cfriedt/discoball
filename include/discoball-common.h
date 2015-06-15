@@ -7,9 +7,6 @@ extern "C" {
 
 #include <stdbool.h>
 
-struct discoball_context;
-typedef struct discoball_context discoball_context_t;
-
 int discoball_common_register( discoball_context_t *ctx, void *cb, bool server );
 int discoball_common_deregister( discoball_context_t *ctx, bool server );
 

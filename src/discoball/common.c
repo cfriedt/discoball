@@ -56,7 +56,7 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 		}
 		memset( ctx, 0, sizeof( *ctx ) );
 		ictx->view.peer.flags.bitwise.server = !!server;
-		cbp = (void *) ( server ? & ictx->view.peer.view.server.cb : & ictx->view.peer.view.client.cb );
+		cbp = server ? (void **) &ictx->view.peer.view.server.cb : (void **) &ictx->view.peer.view.client.cb;
 		*cbp = cb;
 		CIRCLEQ_INSERT_TAIL( &head, peer, entries );
 	} else {
