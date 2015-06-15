@@ -63,10 +63,6 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 		r = -ENOENT;
 		CIRCLEQ_FOREACH( it, &head, entries ) {
 			if ( peer == it && peer->flags.bitwise.server == server ) {
-				if ( server ) {
-					ictx->view.peer.view.server.cb->cleanup( ctx );
-				}
-				memset( ctx, 0, sizeof( *ctx ) );
 				CIRCLEQ_REMOVE( &head, peer, entries );
 				r = 0;
 				goto unlock;

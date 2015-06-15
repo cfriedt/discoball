@@ -29,10 +29,56 @@
 
 static const bool a_server = true;
 
+static int server_setup( discoball_internal_context_t *ictx ) {
+	return -ENOSYS;
+}
+
 int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *ccb ) {
-	return discoball_common_register( ctx, ccb, a_server );
+	int r;
+	r = discoball_common_register( ctx, ccb, a_server );
+	if ( r < 0 ) {
+		errno = -r;
+		E( "discoball_common_register" );
+		goto out;
+	}
+
+	ictx = discoball_to_internal( ctx );
+
+	r = server_setup( ictx );
+	if ( r < 0 ) {
+		errno = -r;
+		E( "server_setup" );
+		goto dereg;
+	}
+
+	r = 0;
+	goto out;
+
+dereg:
+	discoball_server_deregister( ctx );
+
+out:
+	return r;
 }
 
 int discoball_server_deregister( discoball_context_t *ctx ) {
-	return discoball_common_deregister( ctx, a_server );
+	int r;
+
+	discoball_internal_context_t *ictx;
+
+	r = discoball_common_deregister( ctx, a_server );
+	if ( r < 0 ) {
+		errno = -r;
+		E( "discoball_common_deregister" );
+		goto out;
+	}
+
+	ictx = discoball_to_internal( ctx );
+	if ( NULL != ictx->view.peer.view.server.cb->cleanup ) {
+		ictx->view.peer.view.server.cb->cleanup( ctx );
+	}
+	memset( ctx, 0, sizeof( *ctx ) );
+
+out:
+	return r;
 }
