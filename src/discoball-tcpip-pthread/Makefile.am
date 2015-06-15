@@ -24,9 +24,20 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-SUBDIRS = \
-  include \
-  src \
-  test
+if ENABLE_PTHREAD
+#if ENABLE_SELECT2
+#if ENABLE_SOCKET
 
-dist_doc_DATA = AUTHORS ChangeLog COPYING NEWS README
+lib_LTLIBRARIES = \
+  libdiscoball-tcpip-pthread.la
+
+libdiscoball_tcpip_pthread_la_SOURCES = \
+  client.c \
+  server.c
+
+libdiscoball_tcpip_pthread_la_LIBADD = \
+  ../discoball/libdiscoball.la
+
+#endif
+#endif
+endif

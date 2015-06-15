@@ -29,6 +29,10 @@
 #ifndef DISCOBALL_PACKET_H_
 #define DISCOBALL_PACKET_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -221,5 +225,9 @@ typedef struct discoboall_packet_property {
 /*###########################################################################
  #                          GET / SET PROPERTY PACKETS
  ###########################################################################*/
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_PACKET_H_ */

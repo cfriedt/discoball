@@ -29,6 +29,10 @@
 #ifndef DISCOBALL_DISCOBALL_H_
 #define DISCOBALL_DISCOBALL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /*###########################################################################
  #                       DISCOBALL INCLUDES
  ###########################################################################*/
@@ -43,5 +47,9 @@ typedef struct discoball_context {
 #include <discoball/client.h>
 #include <discoball/server.h>
 #include <discoball/buffer.h>
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_DISCOBALL_H_ */

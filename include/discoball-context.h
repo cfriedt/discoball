@@ -1,16 +1,15 @@
 #ifndef DISCOBALL_CONTEXT_H_
 #define DISCOBALL_CONTEXT_H_
 
-// CONTEXT
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#include "discoball/discoball.h"
 
 /* API Consumers can duplicate data in their own callbacks if required.
  * That way, dynamic allocation and freeing is unnecessary.
  */
-
-// FIXME: both discoball_client_context and discoball_server_context need "specific" data
-// I'm going to take the approach that this will be a key-value system, where the keys are
-// integers
-// Also need to expose functions publicly - i.e. discoball_client_get_specific(), discoball_client_set_specific(),
 
 typedef struct discoball_client_context {
 	discoball_client_cb_t *cb;
@@ -57,5 +56,9 @@ static inline discoball_internal_context_t *discoball_to_internal( discoball_con
 static inline discoball_peer_t *discoball_internal_to_peer( discoball_internal_context_t *ctx ) {
 	return &ctx->view.peer;
 }
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_CONTEXT_H_ */

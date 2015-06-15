@@ -29,8 +29,16 @@
 #ifndef STRLEN_H_
 #define STRLEN_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <sys/types.h>
 
 size_t strlen( const char *s );
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // STRLEN_H_

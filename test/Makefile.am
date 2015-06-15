@@ -24,6 +24,11 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+if ENABLE_GTEST
+AM_CXXFLAGS = @GTEST_CXXFLAGS@
+AM_LDFLAGS  = @GTEST_LDFLAGS@
+endif
+
 nongtest_programs = \
   linux-pinctrl-example
 
@@ -34,14 +39,19 @@ linux_pinctrl_example_SOURCES = \
 
 if ENABLE_GTEST
 
-gtest_programs = strlen
+gtest_programs = \
+  strlen \
+  discoball-context-size
 
-strlen_CXXFLAGS = @GTEST_CXXFLAGS@
-strlen_LDFLAGS = @GTEST_LDFLAGS@
 strlen_SOURCES = \
   strlen.h \
   strlen.cc \
   strlen-unittest.cc
+
+discoball_context_size_SOURCES = \
+  discoball_context_size.cc
+discoball_context_size_LDADD = \
+  ../src/discoball/libdiscoball.la
 
 endif
 
@@ -51,7 +61,8 @@ noinst_PROGRAMS = \
 
 check-local: $(noinst_PROGRAMS)
 	for i in $(nongtest_programs); do \
-	  ./$$i || exit 1; \
+	  ./$$i || ( TEST FAILED $$i; exit 1 ); \
+	  echo "TEST PASSED $$i "; \
 	done
 	for i in $(gtest_programs); do \
 	  @LD_LIBRARY_PATH_VAR@=@GTEST_PATH@/lib \

@@ -1,6 +1,10 @@
 #ifndef DISCOBALL_DEBUG_H_
 #define DISCOBALL_DEBUG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifdef DEBUG
 
 #include <stdio.h>
@@ -29,5 +33,9 @@
 #define E( fmt, args... )
 
 #endif
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_DEBUG_H_ */

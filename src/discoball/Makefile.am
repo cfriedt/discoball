@@ -24,9 +24,10 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-SUBDIRS = \
-  include \
-  src \
-  test
+lib_LTLIBRARIES = \
+  libdiscoball.la
 
-dist_doc_DATA = AUTHORS ChangeLog COPYING NEWS README
+libdiscoball_la_SOURCES = \
+  client.c \
+  common.c \
+  server.c

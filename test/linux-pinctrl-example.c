@@ -30,6 +30,10 @@
 
 #include "linux-pinctrl-data.h"
 
+/*
+ * The purpose of this unit test is just to ensure that linux-pinctrl-data compiles and links without unresolved symbols
+ */
+
 int main( int argc, char *argv[] ) {
 	return 0;
 }

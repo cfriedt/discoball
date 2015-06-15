@@ -33,11 +33,19 @@
 #error discoball/client.h should not be directly included. It should be included by including discoball/discoball.h
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 typedef struct discoball_client_cb {
-	int (*write)( void *data, size_t size );
+	int (*write)( discoball_context_t *ctx, void *data, size_t size );
 } discoball_client_cb_t;
 
 int discoball_client_register( discoball_context_t *ctx, discoball_client_cb_t *ccb );
 int discoball_client_deregister( discoball_context_t *ctx );
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_CLIENT_H_ */

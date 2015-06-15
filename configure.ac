@@ -116,11 +116,15 @@ AS_IF([test "x$enable_debug" = "xyes"], [
 ])
 AM_CONDITIONAL([ENABLE_DEBUG], [test x$ENABLE_DEBUG = xyes])
 
+CXXFLAGS="${CFLAGS}"
+
 AC_CONFIG_FILES(
     Makefile
     include/Makefile
     include/public/Makefile
     src/Makefile
+    src/discoball/Makefile
+    src/discoball-tcpip-pthread/Makefile
     test/Makefile
 )
 

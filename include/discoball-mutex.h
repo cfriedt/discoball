@@ -1,7 +1,13 @@
 #ifndef DISCOBALL_MUTEX_H_
 #define DISCOBALL_MUTEX_H_
 
-#include "discoball-internal.h"
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif /* HAVE_CONFIG_H */
 
 /* Some level of protection primitive is required, but in general,
  * API Consumers will not need to concern themselves with such matters
@@ -18,6 +24,8 @@
 #if defined( DISCOBALL_MUTEX_DEFINED )
 #error DISCOBALL_MUTEX_DEFINED already defined elsewhere
 #endif
+
+#include <pthread.h>
 
 #define DISCOBALL_MUTEX_DECLARE( _name ) pthread_mutex_t _name = PTHREAD_MUTEX_INITIALIZER
 #define DISCOBALL_MUTEX_LOCK( _name ) { \
@@ -56,5 +64,9 @@
 // TODO: make a simple mutex implementation using atomic operations (i.e. spinlocks)
 
 // TODO: make a simple mutex implementation disabling interrupts (for bare-metal systems)
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_MUTEX_H_ */

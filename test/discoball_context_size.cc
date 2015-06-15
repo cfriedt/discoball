@@ -26,61 +26,9 @@
  * SUCH DAMAGE.
  */
 
-#ifndef LINUX_TYPES_H_
-#define LINUX_TYPES_H_
+#include "gtest/gtest.h"
+#include "discoball-internal.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-#include <sys/types.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-// define e.g. __u32 __s32 u32 s32 all in one statement
-#undef _
-#define _(x) \
-	typedef uint##x##_t __u##x; \
-	typedef int##x##_t __s##x; \
-	typedef uint##x##_t u##x; \
-	typedef int##x##_t s##x
-
-_(64);
-_(32);
-_(16);
-_(8);
-#undef _
-
-struct list_head;
-struct list_head {
-	struct list_head *prev;
-	struct list_head *next;
-};
-
-struct hlist_head {
-	struct hlist_node *first;
-};
-
-struct hlist_node;
-struct hlist_node {
-	struct hlist_node *next;
-	struct hlist_node **pprev;
-};
-
-typedef size_t __kernel_size_t;
-typedef unsigned gfp_t;
-typedef off_t loff_t;
-
-#define __must_check
-
-#define MAX_ERRNO	4095
-#define IS_ERR(x) 0
-#define ERR_PTR(x) 0
-#define PTR_ERR(x) 0
-#define ERR_CAST(x) 0
-
-#ifdef __cplusplus
+TEST( ContextTest, SizeLessThanOrEqualToOpaqueSize ) {
+  EXPECT_LE( sizeof( discoball_peer_t ), sizeof( discoball_context_t ) );
 }
-#endif /* __cplusplus */
-
-#endif /* LINUX_TYPES_H_ */

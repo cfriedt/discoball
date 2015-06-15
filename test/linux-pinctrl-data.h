@@ -29,4 +29,12 @@
 #ifndef TEST_LINUX_PINCTRL_DATA_H_
 #define TEST_LINUX_PINCTRL_DATA_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
 #endif /* TEST_LINUX_PINCTRL_DATA_H_ */

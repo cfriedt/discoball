@@ -17,6 +17,14 @@
  * made available.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 int discoball_buffer_append_data( discoball_context_t *ctx, void *data, size_t len );
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_BUFFER_H_ */

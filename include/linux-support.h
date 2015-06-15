@@ -1,6 +1,10 @@
 #ifndef INCLUDE_SUPPORT_H_
 #define INCLUDE_SUPPORT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifndef DISCOBALL_INTERNAL_H_
 #error support.h is not meant to be included on its own. Please include discoball_internal.h instead
 #endif
@@ -21,5 +25,9 @@
 #include "linux/pinctrl/pinctrl.h"
 #include "linux/pinctrl/pinctrl-state.h"
 #include "linux/pinctrl/pinmux.h"
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* INCLUDE_SUPPORT_H_ */

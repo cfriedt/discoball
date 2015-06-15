@@ -33,12 +33,20 @@
 #error discoball/server.h should not be directly included. It should be included by including discoball/discoball.h
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 typedef struct discoball_server_cb {
-	int (*write)( void *data, size_t size );
-	int (*cleanup)( );
+	int (*write)( discoball_context_t *ctx, void *data, size_t size );
+	int (*cleanup)( discoball_context_t *ctx );
 } discoball_server_cb_t;
 
 int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *scb );
 int discoball_server_deregister( discoball_context_t *ctx );
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_SERVER_H_ */

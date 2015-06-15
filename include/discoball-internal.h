@@ -29,6 +29,10 @@
 #ifndef DISCOBALL_INTERNAL_H_
 #define DISCOBALL_INTERNAL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
@@ -100,5 +104,9 @@
 #include "discoball-context.h"
 #include "discoball-debug.h"
 #include "discoball-mutex.h"
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCOBALL_INTERNAL_H_ */
