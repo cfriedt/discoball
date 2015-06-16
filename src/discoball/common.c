@@ -32,7 +32,6 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 	discoball_internal_context_t *ictx;
 	discoball_peer_t *peer;
 	discoball_peer_t *it;
-	void **cbp;
 
 	if ( NULL == ctx || ( true == _register || NULL == cb ) ) {
 		r = -EINVAL;
@@ -54,10 +53,6 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 				goto unlock;
 			}
 		}
-		memset( ctx, 0, sizeof( *ctx ) );
-		ictx->view.peer.flags.bitwise.server = !!server;
-		cbp = server ? (void **) &ictx->view.peer.view.server.cb : (void **) &ictx->view.peer.view.client.cb;
-		*cbp = cb;
 		CIRCLEQ_INSERT_TAIL( &head, peer, entries );
 	} else {
 		r = -ENOENT;

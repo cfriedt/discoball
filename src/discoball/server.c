@@ -29,8 +29,19 @@
 
 static const bool a_server = true;
 
+static const discoball_internal_context_t prototype_server_context = {
+	.view.peer = {
+		.flags.bitwise = {
+			.server    = true,
+			.noack     = false,
+			.heartbeat = DISCOBALL_HEARTBEAT_1s,
+		},
+	},
+};
+
 static int server_setup( discoball_internal_context_t *ictx ) {
-	return -ENOSYS;
+	int port;
+	port = ictx->view.peer.view.server.port;
 }
 
 int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *ccb ) {

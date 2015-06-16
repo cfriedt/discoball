@@ -24,7 +24,7 @@ typedef struct discoball_peer {
 		struct _discoball_peer_bitwise {
 			bool server:1;
 			bool noack:1;
-			int heartbeat:2; // 0b00 => disabled, 0b01 => 1s, 0b10 => 10s, 0b11 => 100s
+			int heartbeat:2; // see packet.h for values
 		} bitwise;
 		uint32_t raw;
 	} flags;

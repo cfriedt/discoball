@@ -28,4 +28,5 @@ nobase_include_HEADERS = \
   discoball/client.h \
   discoball/discoball.h \
   discoball/packet.h \
-  discoball/server.h
+  discoball/server.h \
+  discoball/tcpip-pthread/server.h

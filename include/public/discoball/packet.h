@@ -113,6 +113,14 @@ typedef struct discoboall_packet_clock_adjustment {
  #                            HEARTBEAT
  ###########################################################################*/
 
+// settable property
+enum {
+	DISCOBALL_HEARTBEAT_DISABLED = 0,
+	DISCOBALL_HEARTBEAT_1s       = 1,
+	DISCOBALL_HEARTBEAT_10s      = 2,
+	DISCOBALL_HEARTBEAT_100s     = 3,
+};
+
 typedef struct discoboall_packet_heartbeat {
 	discoball_packet_header_t hdr;
 	discoball_packet_footer_t ftr;
@@ -203,7 +211,7 @@ typedef discoball_packet_array_data_t discoboall_packet_data_string_t;
 
 typedef enum {
 	DISCOBALL_PROPERTY_SET = 1, // 1 if the intension of the packet is to write a value to the property, otherwise a read
-	DISCOBALL_PROPERTY_RO  = 2, // if SET bit is clear, indicates property is read-only
+	DISCOBALL_PROPERTY_RO  = 2, // 1 if the property is read-only. ignore if the set bit is also high
 } discoball_property_flag_t;
 
 // header portion of raw property frame, always followed by a key and footer at a given offset, and an optional value
@@ -223,7 +231,51 @@ typedef struct discoboall_packet_property {
 // int discoball_packet_property_getval( discoball_packet_t *pkt, discoball_packet_data_t **val );
 
 /*###########################################################################
- #                          GET / SET PROPERTY PACKETS
+ #                       ASYNC NOTIFICATION PACKETS
+ ###########################################################################*/
+
+// e.g. "soft" interrupt: configuration has changed and must be re-queried,
+//                        client / server gracefully shutting down..
+// e.g. "hard" interrupt: I/O device was interrupted. Transfer completion..
+
+/*###########################################################################
+ ############################################################################
+ #
+ #                                I/O
+ #
+ ############################################################################
+ ###########################################################################*/
+
+/*###########################################################################
+ #                    PINCTRL / PINCONF / PINMUX PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             GPIO PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             ADC PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             DAC PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             PWM PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                            SERIAL PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             I2C PACKETS
+ ###########################################################################*/
+
+/*###########################################################################
+ #                             SPI PACKETS
  ###########################################################################*/
 
 #ifdef __cplusplus
