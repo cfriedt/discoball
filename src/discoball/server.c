@@ -39,26 +39,82 @@ static const discoball_internal_context_t prototype_server_context = {
 	},
 };
 
-static int server_setup( discoball_internal_context_t *ictx ) {
-	int port;
-	port = ictx->view.peer.view.server.port;
+static int discoball_setup_server( discoball_internal_context_t *ictx ) {
+	int r;
+
+	discoball_server_cb_t cb;
+	discoball_context_t *ctx;
+	ctx = discoball_from_internal( ictx );
+	cb = ictx->view.peer.view.server.cb;
+
+	r = 0;
+
+	if ( NULL != cb->init ) {
+		r = cb->init( ctx );
+		if ( 0 != r ) {
+			E( "init callback returned %d", r );
+			goto out;
+		}
+	}
+
+	if ( NULL != cb->start ) {
+		r = cb->start( ctx );
+		if ( 0 != r ) {
+			E( "start callback returned %d", r );
+			goto out;
+		}
+	}
+
+out:
+	return r;
+}
+
+static int discoball_teardown_server( discoball_internal_context_t *ictx ) {
+	int r;
+
+	int r1, r2;
+
+	discoball_server_cb_t cb;
+	discoball_context_t *ctx;
+	ctx = discoball_from_internal( ictx );
+	cb = ictx->view.peer.view.server.cb;
+
+	r = 0;
+
+	if ( NULL != cb->stop ) {
+		r = cb->stop( ctx );
+		if ( 0 != r ) {
+			W( "stop callback returned %d", r );
+		}
+	}
+
+	if ( NULL != cb->fini ) {
+		r = cb->fini( ctx );
+		if ( 0 != r ) {
+			W( "fini callback returned %d", r );
+		}
+	}
+
+out:
+	return r;
 }
 
 int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *ccb ) {
 	int r;
+
+	discoball_internal_context_t *ictx;
+
 	r = discoball_common_register( ctx, ccb, a_server );
 	if ( r < 0 ) {
-		errno = -r;
-		E( "discoball_common_register" );
+		E( "discoball_common_register failed (%d)", r );
 		goto out;
 	}
 
 	ictx = discoball_to_internal( ctx );
 
-	r = server_setup( ictx );
+	r = discoball_server_setup( ictx );
 	if ( r < 0 ) {
-		errno = -r;
-		E( "server_setup" );
+		E( "discoball_server_setup failed (%d)", r );
 		goto dereg;
 	}
 
@@ -79,15 +135,17 @@ int discoball_server_deregister( discoball_context_t *ctx ) {
 
 	r = discoball_common_deregister( ctx, a_server );
 	if ( r < 0 ) {
-		errno = -r;
-		E( "discoball_common_deregister" );
+		E( "discoball_common_deregister failed (%d)", r );
 		goto out;
 	}
 
 	ictx = discoball_to_internal( ctx );
-	if ( NULL != ictx->view.peer.view.server.cb->cleanup ) {
-		ictx->view.peer.view.server.cb->cleanup( ctx );
+
+	r = discoball_teardown_server( ictx );
+	if ( 0 != r ) {
+		W( "discoball_common_deregister failed (%d)", r );
 	}
+
 	memset( ctx, 0, sizeof( *ctx ) );
 
 out:

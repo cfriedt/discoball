@@ -77,6 +77,10 @@ typedef struct discoball_internal_context {
 	} view;
 } discoball_internal_context_t;
 
+static inline discoball_context_t *discoball_from_internal( discoball_internal_context_t *ictx ) {
+	return &ictx->view.opaque;
+}
+
 static inline discoball_internal_context_t *discoball_to_internal( discoball_context_t *ctx ) {
 	return container_of( ctx, discoball_internal_context_t, view.opaque );
 }

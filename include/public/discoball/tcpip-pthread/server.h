@@ -33,24 +33,46 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef struct discoball_tcpip_pthread_servert_context_t {
+#include <discoball/discoball.h>
+
+#include <pthread.h>
+
+#define DISCOBALL_TCPIP_PTHREAD_SERVER_AF_DEFAULT AF_INET
+#define DISCOBALL_TCPIP_PTHREAD_SERVER_PF_DEFAULT PF_INET
+#define DISCOBALL_TCPIP_PTHREAD_SERVER_PORT_DEFAULT 1234
+
+enum {
+	SERVER_STATUS_NOT_INITIALIZED,
+	SERVER_STATUS_INITIALIZED,
+	SERVER_STATUS_RUNNING,
+	SERVER_STATUS_SHOULD_FINALIZE,
+	SERVER_STATUS_FINALIZED,
+};
+
+typedef struct discoball_tcpip_pthread_server_context {
 	discoball_context_t ctx;
+	pthread_t server_thread;
+	int server_thread_status;
+	int server_thread_return;
+	int server_af;
+	int server_pf;
 	int server_port;
 	int server_socket;
 	int interrupt_pair[2];
 	int client_socket;
-};
+} discoball_tcpip_pthread_server_context_t;
 
-typedef struct discoball_server_cb {
-	int (*write)( discoball_context_t *ctx, void *data, size_t size );
-	int (*cleanup)( discoball_context_t *ctx );
-} discoball_server_cb_t;
+static inline discoball_tcpip_pthread_server_context_t *discoball_context_to_tcpip_pthread( discoball_context_t *ctx ) {
+	return container_of( ctx, discoball_tcpip_pthread_server_context_t, ctx );
+}
 
-int discoball_tcpip_server_register( discoball_context_t *ctx, discoball_server_cb_t *scb );
-int discoball_tcpip_server_deregister( discoball_context_t *ctx );
+int discoball_tcpip_pthread_server_init( discoball_tcpip_pthread_server_context_t *ctx );
+int discoball_tcpip_pthread_server_start( discoball_tcpip_pthread_server_context_t *ctx );
+int discoball_tcpip_pthread_server_stop( discoball_tcpip_pthread_server_context_t *ctx );
+int discoball_tcpip_pthread_server_fini( discoball_tcpip_pthread_server_context_t *ctx );
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* DISCOBALL_SERVER_H_ */
+#endif /* DISCOBALL_TCPIP_PTHREAD_SERVER_H_ */

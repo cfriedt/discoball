@@ -31,15 +31,18 @@
 
 #ifndef DISCOBALL_DISCOBALL_H_
 #error discoball/server.h should not be directly included. It should be included by including discoball/discoball.h
-#endif
+#endif /* DISCOBALL_DISCOBALL_H_ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 typedef struct discoball_server_cb {
+	int (*init)( discoball_context_t *ctx );
+	int (*fini)( discoball_context_t *ctx );
+	int (*start)( discoball_context_t *ctx );
+	int (*stop)( discoball_context_t *ctx );
 	int (*write)( discoball_context_t *ctx, void *data, size_t size );
-	int (*cleanup)( discoball_context_t *ctx );
 } discoball_server_cb_t;
 
 int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *scb );

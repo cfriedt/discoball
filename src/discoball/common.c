@@ -61,7 +61,7 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 	discoball_peer_t *peer;
 	discoball_peer_t *it;
 
-	if ( NULL == ctx || ( true == _register || NULL == cb ) ) {
+	if ( NULL == ctx || ( true == _register && NULL == cb ) ) {
 		r = -EINVAL;
 		goto out;
 	}
@@ -80,6 +80,11 @@ static int _discoball_common_register( discoball_context_t *ctx, void *cb, bool 
 				r = -EEXIST;
 				goto unlock;
 			}
+		}
+		if ( peer->flags.bitwise.server ) {
+			peer->view.server.cb = cb;
+		} else {
+			peer->view.client.cb = cb;
 		}
 		CIRCLEQ_INSERT_TAIL( &head, peer, entries );
 	} else {
