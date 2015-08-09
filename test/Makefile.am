@@ -24,18 +24,21 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-if ENABLE_GTEST
-AM_CXXFLAGS = @GTEST_CXXFLAGS@
-AM_LDFLAGS  = @GTEST_LDFLAGS@
-endif
-
 nongtest_programs = \
-  linux-pinctrl-example
+  linux-pinctrl-example \
+  tcpip-example
 
 linux_pinctrl_example_SOURCES = \
   linux-pinctrl-data.h \
   linux-pinctrl-data.c \
   linux-pinctrl-example.c
+
+tcpip_example_SOURCES = \
+  tcpip-example.c
+
+tcpip_example_LDADD = \
+  ../src/discoball/libdiscoball.la \
+  ../src/discoball-tcpip-pthread/libdiscoball-tcpip-pthread.la
 
 if ENABLE_GTEST
 
@@ -47,11 +50,19 @@ strlen_SOURCES = \
   strlen.h \
   strlen.cc \
   strlen-unittest.cc
+strlen_LDFLAGS = \
+  @GTEST_LDFLAGS@
+strlen_CXXFLAGS = \
+  @GTEST_CXXFLAGS@
 
 discoball_context_size_SOURCES = \
   discoball_context_size.cc
 discoball_context_size_LDADD = \
   ../src/discoball/libdiscoball.la
+discoball_context_size_LDFLAGS = \
+  @GTEST_LDFLAGS@
+discoball_context_size_CXXFLAGS = \
+  @GTEST_CXXFLAGS@
 
 endif
 

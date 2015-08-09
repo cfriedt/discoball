@@ -62,14 +62,7 @@ typedef struct discoball_tcpip_pthread_server_context {
 	int client_socket;
 } discoball_tcpip_pthread_server_context_t;
 
-static inline discoball_tcpip_pthread_server_context_t *discoball_context_to_tcpip_pthread( discoball_context_t *ctx ) {
-	return container_of( ctx, discoball_tcpip_pthread_server_context_t, ctx );
-}
-
-int discoball_tcpip_pthread_server_init( discoball_tcpip_pthread_server_context_t *ctx );
-int discoball_tcpip_pthread_server_start( discoball_tcpip_pthread_server_context_t *ctx );
-int discoball_tcpip_pthread_server_stop( discoball_tcpip_pthread_server_context_t *ctx );
-int discoball_tcpip_pthread_server_fini( discoball_tcpip_pthread_server_context_t *ctx );
+extern const discoball_server_cb_t discoball_tcpip_pthread_server_cb;
 
 #ifdef __cplusplus
 }

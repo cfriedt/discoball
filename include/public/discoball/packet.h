@@ -55,14 +55,14 @@ typedef struct discoball_packet_header {
 	uint8_t endpoint;
 	uint32_t timestamp_ns_tx;
 	uint32_t timestamp_ns_rx;
-	uint8_t data[];
-} discoball_packet_header_t __attribute__(( packed ));
+	//uint8_t data[];
+} __attribute__(( packed )) discoball_packet_header_t;
 
 typedef discoball_packet_header_t discoball_packet_t;
 
 typedef struct discoball_packet_footer {
 	uint16_t crc16; //
-} discoball_packet_footer_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_footer_t;
 
 /*###########################################################################
  #                            FRAME TYPES
@@ -97,7 +97,7 @@ typedef struct discoboall_packet_ack {
 		uint16_t raw;
 	} status;
 	discoball_packet_footer_t ftr;
-} discoball_packet_ack_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_ack_t;
 
 /*###########################################################################
  #                            CLOCK ADJUSTMENT
@@ -107,7 +107,7 @@ typedef struct discoboall_packet_clock_adjustment {
 	discoball_packet_header_t hdr;
 	int32_t adjustment_ns;
 	discoball_packet_footer_t ftr;
-} discoball_packet_clock_adjustment_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_clock_adjustment_t;
 
 /*###########################################################################
  #                            HEARTBEAT
@@ -124,7 +124,7 @@ enum {
 typedef struct discoboall_packet_heartbeat {
 	discoball_packet_header_t hdr;
 	discoball_packet_footer_t ftr;
-} discoball_packet_heartbeat_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_heartbeat_t;
 
 /*###########################################################################
  #                                ERROR
@@ -133,7 +133,7 @@ typedef struct discoboall_packet_heartbeat {
 typedef enum {
 	// if not set, both client and server should reset their internal state machines
 	DISCOBALL_ERR_RECOVERABLE = 1,
-} discoball_packet_error_t;
+} discoball_packet_err_t;
 
 typedef struct discoboall_packet_error {
 	discoball_packet_header_t hdr;
@@ -141,12 +141,12 @@ typedef struct discoboall_packet_error {
 		struct _discoball_packet_error_status {
 			uint8_t err_frame_no;
 			uint8_t type;
-			uint16_t errno;
+			uint16_t err_no;
 		} bitwise;
 		uint32_t raw;
 	} status;
 	discoball_packet_footer_t ftr;
-} discoball_packet_error_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_error_t;
 
 /*###########################################################################
  #                          GENERIC DATA / ARRAY TYPES
@@ -181,7 +181,7 @@ typedef struct discoball_array {
 	uint32_t total_length; // total length of the array
 	uint32_t segment_offset; // if 0, first array segment, otherwise, subsequent-array segment. offset in terms of array index, not bytes offset in larger part of array
 	uint8_t  segment_length; // if 0, first array segment, otherwise, subsequent-array segment. offset in terms of array index, not bytes offset in larger part of array
-	uint8_t data[];
+	//uint8_t data[];
 } discoball_array_t;
 
 // header portion of raw data frame, always followed by a footer
@@ -189,14 +189,14 @@ typedef struct discoboall_packet_data {
 	discoball_packet_header_t hdr;
 	uint8_t wrt_frame_no; // 0 for no-related-frame, nonzero for query frame, iso-initializing frame, or previous array data frame
 	uint8_t type;
-	uint8_t data[];
-} discoball_packet_data_t __attribute__(( packed ));
+	//uint8_t data[];
+} __attribute__(( packed )) discoball_packet_data_t;
 
 // header portion of raw array data frame, always followed by a footer at a given offset
 typedef struct discoboall_packet_array_data {
 	discoball_packet_data_t data;
 	discoball_array_t array;
-} discoball_packet_array_data_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_array_data_t;
 
 // a human-readable string is simply an array with data.type set to UTF8
 typedef discoball_packet_array_data_t discoboall_packet_data_string_t;
@@ -225,7 +225,7 @@ typedef struct discoboall_packet_property {
 		uint8_t raw;
 	} flags;
 	uint8_t data[];
-} discoball_packet_property_t __attribute__(( packed ));
+} __attribute__(( packed )) discoball_packet_property_t;
 
 // int discoball_packet_property_getkey( discoball_packet_t *pkt, discoboall_packet_data_string_t **key );
 // int discoball_packet_property_getval( discoball_packet_t *pkt, discoball_packet_data_t **val );

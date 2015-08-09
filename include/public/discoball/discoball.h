@@ -47,6 +47,7 @@ typedef struct discoball_context {
 #include <discoball/client.h>
 #include <discoball/server.h>
 #include <discoball/buffer.h>
+#include <discoball/packet.h>
 
 #ifdef __cplusplus
 }

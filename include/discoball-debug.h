@@ -41,17 +41,23 @@ extern "C" {
 
 #define D( fmt, args... ) \
 { \
-	fprintf( stderr, "%s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args ); \
+	fprintf( stderr, "D/ %s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args ); \
 	fflush( stderr ); \
 }
 
 #define E( fmt, args... ) \
 { \
 	if ( errno ) { \
-		fprintf( stderr, "%s:%d:%s(): %s (%d): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, strerror( errno ), errno, ##args ); \
+		fprintf( stderr, "E/ %s:%d:%s(): %s (%d): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, strerror( errno ), errno, ##args ); \
 	} else { \
-		fprintf( stderr, "%s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args ); \
+		fprintf( stderr, "E/ %s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args ); \
 	} \
+	fflush( stderr ); \
+}
+
+#define W( fmt, args... ) \
+{ \
+	fprintf( stderr, "W/ %s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args ); \
 	fflush( stderr ); \
 }
 
@@ -59,6 +65,7 @@ extern "C" {
 
 #define D( fmt, args... )
 #define E( fmt, args... )
+#deine W( fmt, args... )
 
 #endif
 

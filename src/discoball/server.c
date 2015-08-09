@@ -39,10 +39,10 @@ static const discoball_internal_context_t prototype_server_context = {
 	},
 };
 
-static int discoball_setup_server( discoball_internal_context_t *ictx ) {
+static int discoball_server_setup( discoball_internal_context_t *ictx ) {
 	int r;
 
-	discoball_server_cb_t cb;
+	discoball_server_cb_t *cb;
 	discoball_context_t *ctx;
 	ctx = discoball_from_internal( ictx );
 	cb = ictx->view.peer.view.server.cb;
@@ -69,12 +69,12 @@ out:
 	return r;
 }
 
-static int discoball_teardown_server( discoball_internal_context_t *ictx ) {
+static int discoball_server_teardown( discoball_internal_context_t *ictx ) {
 	int r;
 
 	int r1, r2;
 
-	discoball_server_cb_t cb;
+	discoball_server_cb_t *cb;
 	discoball_context_t *ctx;
 	ctx = discoball_from_internal( ictx );
 	cb = ictx->view.peer.view.server.cb;
@@ -103,6 +103,8 @@ int discoball_server_register( discoball_context_t *ctx, discoball_server_cb_t *
 	int r;
 
 	discoball_internal_context_t *ictx;
+
+	memcpy( ctx, &prototype_server_context, sizeof( prototype_server_context ) );
 
 	r = discoball_common_register( ctx, ccb, a_server );
 	if ( r < 0 ) {
@@ -141,7 +143,7 @@ int discoball_server_deregister( discoball_context_t *ctx ) {
 
 	ictx = discoball_to_internal( ctx );
 
-	r = discoball_teardown_server( ictx );
+	r = discoball_server_teardown( ictx );
 	if ( 0 != r ) {
 		W( "discoball_common_deregister failed (%d)", r );
 	}

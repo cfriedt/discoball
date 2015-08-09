@@ -28,15 +28,18 @@
 
 #include <sys/socket.h>
 #include <netdb.h>
+#include <string.h>
 #include <errno.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <stddef.h>
 
 #include "discoball/tcpip-pthread/server.h"
+#include "discoball-container-of.h"
+#include "discoball-debug.h"
 
 static const discoball_tcpip_pthread_server_context_t prototype_tcpip_pthread_server = {
-	.server_thread = PTHREAD_MUTEX_INITIALIZER,
 	.server_thread_status = SERVER_STATUS_NOT_INITIALIZED,
-	.server_thread_return = 0,
 	.server_af = DISCOBALL_TCPIP_PTHREAD_SERVER_AF_DEFAULT,
 	.server_pf = DISCOBALL_TCPIP_PTHREAD_SERVER_PF_DEFAULT,
 	.server_port = DISCOBALL_TCPIP_PTHREAD_SERVER_PORT_DEFAULT,
@@ -44,6 +47,23 @@ static const discoball_tcpip_pthread_server_context_t prototype_tcpip_pthread_se
 	.interrupt_pair = { -1, -1, },
 	.client_socket = -1,
 };
+
+#if !defined __GNUC__
+static inline discoball_tcpip_pthread_server_context_t *__to_tps_container_of( void *p ) {
+	discoball_tcpip_pthread_server_context_t *r;
+	const discoball_context_t *__mptr = p;
+	r = (discoball_tcpip_pthread_server_context_t *)( (char *)__mptr - offsetof(discoball_tcpip_pthread_server_context_t,ctx) );
+	return r;
+}
+#undef container_of
+#define container_of( ptr, type, member) __to_tps_container_of( ptr )
+#endif
+
+static inline discoball_tcpip_pthread_server_context_t *to_tps( discoball_context_t *ctx ) {
+	discoball_tcpip_pthread_server_context_t *r;
+	r = container_of( ctx, discoball_tcpip_pthread_server_context_t, ctx );
+	return r;
+}
 
 static void *server_thread( void *data ) {
 	int r;
@@ -58,7 +78,7 @@ static void *server_thread( void *data ) {
 
 	for( ; SERVER_STATUS_SHOULD_FINALIZE != ctx->server_thread_status; ) {
 
-		r = accept( ctx->server_socket, &addr, &addr_len );
+		r = accept( ctx->server_socket, (struct sockaddr *) &addr, &addr_len );
 		if ( -1 == r ) {
 			ctx->server_thread_return = errno;
 			E( "accept" );
@@ -76,7 +96,9 @@ static void *server_thread( void *data ) {
 			goto close_client_socket;
 		}
 
-		r = discoball_server_register();
+		//r = discoball_server_register();
+		r = 0;
+
 
 	close_socket_pair:
 		close( ctx->interrupt_pair[ 0 ] );
@@ -95,15 +117,19 @@ static void *server_thread( void *data ) {
 	return & ctx->server_thread_return;
 }
 
-static int discoball_tcpip_pthread_server_init( discoball_tcpip_pthread_server_context_t *ctx ) {
-	memcpy( ctx, prototype_tcpip_pthread_server, sizeof ( prototype_tcpip_pthread_server ) );
-	return 0;
+static int discoball_tcpip_pthread_server_init( discoball_context_t *ctx ) {
+	int r;
+	discoball_tcpip_pthread_server_context_t *_ctx = to_tps( ctx );
+	memcpy( _ctx, &prototype_tcpip_pthread_server, sizeof ( prototype_tcpip_pthread_server ) );
+	r = 0;
+	return r;
 }
 
-static int discoball_tcpip_pthread_server_fini( discoball_tcpip_pthread_server_context_t *ctx ) {
+static int discoball_tcpip_pthread_server_fini( discoball_context_t *ctx ) {
 	int r;
+	discoball_tcpip_pthread_server_context_t *_ctx = to_tps( ctx );
 
-	if ( SERVER_STATUS_FINALIZED != ctx->server_thread_status ) {
+	if ( SERVER_STATUS_FINALIZED != _ctx->server_thread_status ) {
 		r = -EBUSY;
 		goto out;
 	}
@@ -115,55 +141,60 @@ out:
 	return r;
 }
 
-static int discoball_tcpip_pthread_server_start( discoball_tcpip_pthread_server_context_t *ctx ) {
+static int discoball_tcpip_pthread_server_start( discoball_context_t *ctx ) {
 	int r;
+	discoball_tcpip_pthread_server_context_t *_ctx = to_tps( ctx );
+
 	struct addrinfo hints, *servinfo, *p;
 
+	char port_str[ 8 ];
+
 	memset(&hints, 0, sizeof hints);
-	hints.ai_family = ctx->server_pf;
+	hints.ai_family = _ctx->server_pf;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
+	snprintf( port_str, sizeof( port_str ), "%u", (unsigned short)_ctx->server_port );
 
-	r = getaddrinfo( NULL, ctx->server_port, &hints, &servinfo );
+	r = getaddrinfo( NULL, port_str, &hints, &servinfo );
 	if ( 0 != r ) {
 		E("getaddrinfo");
 		goto out;
 	}
 
 	for( p = servinfo; NULL != p; p = p->ai_next ) {
-		ctx->server_socket = socket( p->ai_family, p->ai_socktype, p->ai_protocol );
-		if ( -1 == ctx->server_socket ) {
+		_ctx->server_socket = socket( p->ai_family, p->ai_socktype, p->ai_protocol );
+		if ( -1 == _ctx->server_socket ) {
 			E( "socket" );
 			continue;
 		}
-		r = bind( ctx->server_socket, p->ai_addr, p->ai_addrlen );
-		if ( -1 ==  bind ) {
+		r = bind( _ctx->server_socket, p->ai_addr, p->ai_addrlen );
+		if ( -1 == r ) {
 			E( "bind" );
-			close( ctx->server_socket );
-			ctx->server_socket = -1;
+			close( _ctx->server_socket );
+			_ctx->server_socket = -1;
 		}
 		break;
 	}
 
 	freeaddrinfo( servinfo );
 
-	if ( -1 == ctx->server_socket ) {
+	if ( -1 == _ctx->server_socket ) {
 		errno = ENOENT;
 		E( "unable to find suitable socket" );
 		r = -1;
 		goto out;
 	}
 
-	r = listen( ctx->server_socket, 1 /* point to point */ );
+	r = listen( _ctx->server_socket, 1 /* point to point */ );
 	if ( -1 == r ) {
 		r = -errno;
 		E( "listen" );
 		goto close_socket;
 	}
 
-	ctx->server_thread_status = SERVER_STATUS_INITIALIZED;
+	_ctx->server_thread_status = SERVER_STATUS_INITIALIZED;
 
-	r = pthread_create( &ctx->server_thread, NULL, server_thread, ctx );
+	r = pthread_create( &_ctx->server_thread, NULL, server_thread, _ctx );
 	if ( 0 != r ) {
 		errno = r;
 		E( "listen" );
@@ -174,36 +205,31 @@ static int discoball_tcpip_pthread_server_start( discoball_tcpip_pthread_server_
 	goto out;
 
 close_socket:
-	close( ctx->server_socket );
-	ctx->server_socket = -1;
+	close( _ctx->server_socket );
+	_ctx->server_socket = -1;
 
 out:
 	return r;
 }
 
-static int discoball_tcpip_pthread_server_stop( discoball_tcpip_pthread_server_context_t *ctx ) {
-	return -ENOSYS;
+static int discoball_tcpip_pthread_server_stop( discoball_context_t *ctx ) {
+	int r;
+	discoball_tcpip_pthread_server_context_t *_ctx = to_tps( ctx );
+	r = -ENOSYS;
+	return r;
 }
 
-static int discoball_tcpip_pthread_server_write( discoball_tcpip_pthread_server_context_t *ctx, void *data, size_t size ) {
-	return -ENOSYS;
+static int discoball_tcpip_pthread_server_write( discoball_context_t *ctx, void *data, size_t size ) {
+	int r;
+	discoball_tcpip_pthread_server_context_t *_ctx = to_tps( ctx );
+	r = -ENOSYS;
+	return r;
 }
 
-static const discoball_server_cb_t discoball_tcpip_pthread_server_cb = {
+const discoball_server_cb_t discoball_tcpip_pthread_server_cb = {
 	.init = discoball_tcpip_pthread_server_init,
 	.fini = discoball_tcpip_pthread_server_fini,
 	.start = discoball_tcpip_pthread_server_start,
 	.stop = discoball_tcpip_pthread_server_stop,
 	.write = discoball_tcpip_pthread_server_write,
 };
-
-int main( int argc, char *argv[] ) {
-
-	int r;
-
-	discoball_context_t ctx;
-
-	r = discoball_server_register( &ctx, &discoball_tcpip_pthread_server_cb );
-
-	return 0;
-}
